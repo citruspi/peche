@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-from peche.logging import level
+from peche.logging import Level
 
 class Handler(object):
 
-    levels = [level.Debug, level.Info, level.Warn, level.Error,
-              level.Critical]
+    levels = [Level.Debug, Level.Info, Level.Warn, Level.Error,
+              Level.Critical]
 
     def on_event(self, event):
         pass

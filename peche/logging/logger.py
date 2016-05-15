@@ -3,19 +3,19 @@
 
 import datetime
 import inspect
-from peche.logging import level
+from peche.logging import Level
 from peche.logging import Event
 from peche.logging.handlers import Handler
 
 class Logger(object):
 
-    def __init__(self, ctx, level_=level.Info, default_levels=None):
+    def __init__(self, ctx, level_=Level.Info, default_levels=None):
         self.ctx = ctx
         self._handlers = {}
         self.level = level_
-        self.default_levels = default_levels or [level.Debug, level.Info,
-                                                 level.Warn, level.Error,
-                                                 level.Critical]
+        self.default_levels = default_levels or [Level.Debug, Level.Info,
+                                                 Level.Warn, Level.Error,
+                                                 Level.Critical]
 
     def add_handler(self, handler, levels=None):
         if inspect.isclass(handler):
@@ -76,16 +76,16 @@ class Logger(object):
                 handler(event)
 
     def debug(self, event=None, **kwargs):
-        self._log(level.Debug, event, **kwargs)
+        self._log(Level.Debug, event, **kwargs)
 
     def info(self, event=None, **kwargs):
-        self._log(level.Info, event, **kwargs)
+        self._log(Level.Info, event, **kwargs)
 
     def warn(self, event=None, **kwargs):
-        self._log(level.Warn, event, **kwargs)
+        self._log(Level.Warn, event, **kwargs)
 
     def error(self, event=None, **kwargs):
-        self._log(level.Error, event, **kwargs)
+        self._log(Level.Error, event, **kwargs)
 
     def critical(self, event=None, **kwargs):
-        self._log(level.Critical, event, **kwargs)
+        self._log(Level.Critical, event, **kwargs)

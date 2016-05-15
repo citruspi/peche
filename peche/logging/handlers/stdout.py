@@ -3,21 +3,21 @@
 
 from termcolor import cprint
 from peche.logging.handlers import Handler
-from peche.logging import level
+from peche.logging import Level
 from sys import stdout, stderr
 
 class StdoutHandler(Handler):
 
     level_to_colour = {
-        level.Debug: 'blue',
-        level.Info: 'green',
-        level.Warn: 'yellow',
-        level.Error: 'red',
-        level.Critical: 'magenta'
+        Level.Debug: 'blue',
+        Level.Info: 'green',
+        Level.Warn: 'yellow',
+        Level.Error: 'red',
+        Level.Critical: 'magenta'
     }
 
     def __init__(self, stderr_levels=None):
-        self.stderr_levels = stderr_levels or [level.Error, level.Critical]
+        self.stderr_levels = stderr_levels or [Level.Error, Level.Critical]
 
     def template(self, event):
         template = '{timestamp}{level}{path}{message}{tags}'
