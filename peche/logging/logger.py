@@ -6,21 +6,29 @@ import inspect
 from peche.logging import level
 from peche.logging import Event
 
+
 class Logger(object):
 
-    def __init__(self, ctx, level_=level.Info):
+    def __init__(self, ctx, level_=level.Info, default_levels=None):
         self.ctx = ctx
         self._handlers = {}
         self.level = level_
+        self.default_levels = default_levels or [level.Debug, level.Info,
+                                                 level.Warn, level.Error,
+                                                 level.Critical]
 
-    def add_handler(self, handler, levels):
+    def add_handler(self, handler, levels=None):
+        levels = levels or self.default_levels
+
         for level_ in levels:
             try:
                 self._handlers[level_].append(handler)
             except KeyError:
                 self._handlers[level_] = [handler]
 
-    def remove_handler(self, handler, levels):
+    def remove_handler(self, handler, levels=None):
+        levels = levels or self.default_levels
+
         for level_ in levels:
             try:
                 self._handlers[level_].remove(handler)
