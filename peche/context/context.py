@@ -4,6 +4,7 @@
 class Context(object):
     root = None
     name = None
+    logger = None
 
     def __init__(self, name, root):
         self.name = name
