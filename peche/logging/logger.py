@@ -8,9 +8,10 @@ from peche.logging import Event
 
 class Logger(object):
 
-    def __init__(self, ctx):
+    def __init__(self, ctx, level_=level.Info):
         self.ctx = ctx
         self._handlers = []
+        self.level = level_
 
     def add_handler(self, handler):
         self._handlers.append(handler)
@@ -21,6 +22,9 @@ class Logger(object):
 
     def _log(self, level_, event, **kwargs):
         timestamp = datetime.datetime.utcnow()
+
+        if level_.value < self.level.value:
+            return
 
         stack = inspect.stack()[2]
 
