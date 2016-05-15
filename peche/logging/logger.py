@@ -5,7 +5,7 @@ import datetime
 import inspect
 from peche.logging import level
 from peche.logging import Event
-
+from peche.logging.handlers import Handler
 
 class Logger(object):
 
@@ -18,7 +18,10 @@ class Logger(object):
                                                  level.Critical]
 
     def add_handler(self, handler, levels=None):
-        levels = levels or self.default_levels
+        if levels is None and isinstance(handler, Handler):
+            levels = handler.levels
+        elif levels is None:
+            levels = self.default_levels
 
         for level_ in levels:
             try:
@@ -27,7 +30,10 @@ class Logger(object):
                 self._handlers[level_] = [handler]
 
     def remove_handler(self, handler, levels=None):
-        levels = levels or self.default_levels
+        if levels is None and isinstance(handler, Handler):
+            levels = handler.levels
+        elif levels is None:
+            levels = self.default_levels
 
         for level_ in levels:
             try:
