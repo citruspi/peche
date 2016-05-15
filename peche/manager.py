@@ -4,6 +4,7 @@
 import inspect
 from peche.context import Context
 from peche.logging import Logger
+from peche.logging.handlers import Stdout
 
 class Manager(object):
     __state = {}
@@ -31,6 +32,7 @@ class Manager(object):
 
         if logger is None:
             logger = Logger(context)
+            logger.add_handler(Stdout)
 
         context.logger = logger
 
