@@ -3,3 +3,4 @@
 
 from peche.logging.levels import Level as level
 from peche.logging.event import Event
+from peche.logging.logger import Logger
