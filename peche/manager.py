@@ -3,6 +3,7 @@
 
 import inspect
 from peche.context import Context
+from peche.logging import Logger
 
 class Manager(object):
     __state = {}
@@ -11,7 +12,7 @@ class Manager(object):
     def __init__(self):
         self.__dict__ = self.__state
 
-    def setup(self, name=None, root=None):
+    def setup(self, name=None, root=None, logger=None):
         if name is None or root is None:
             path = inspect.stack()[1][1]
 
@@ -22,12 +23,17 @@ class Manager(object):
 
         try:
             context = self.contexts[name]
-            return context
+            return context, context.logger
         except KeyError:
             pass
 
         context = Context(name, root)
 
+        if logger is None:
+            logger = Logger(context)
+
+        context.logger = logger
+
         self.contexts[name] = context
 
-        return context
+        return context, context.logger
