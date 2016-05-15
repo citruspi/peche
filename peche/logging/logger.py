@@ -10,15 +10,22 @@ class Logger(object):
 
     def __init__(self, ctx, level_=level.Info):
         self.ctx = ctx
-        self._handlers = []
+        self._handlers = {}
         self.level = level_
 
-    def add_handler(self, handler):
-        self._handlers.append(handler)
+    def add_handler(self, handler, levels):
+        for level_ in levels:
+            try:
+                self._handlers[level_].append(handler)
+            except KeyError:
+                self._handlers[level_] = [handler]
 
-    def remove_handler(self, handler):
-        if handler in self._handlers:
-            self._handlers.remove(handler)
+    def remove_handler(self, handler, levels):
+        for level_ in levels:
+            try:
+                self._handlers[level_].remove(handler)
+            except ValueError:
+                pass
 
     def _log(self, level_, event, **kwargs):
         timestamp = datetime.datetime.utcnow()
@@ -45,7 +52,7 @@ class Logger(object):
             tags=kwargs
         )
 
-        for handler in self._handlers:
+        for handler in self._handlers[level_]:
             handler(event)
 
     def debug(self, event=None, **kwargs):
