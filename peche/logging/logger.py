@@ -70,7 +70,10 @@ class Logger(object):
         )
 
         for handler in self._handlers[level_]:
-            handler(event)
+            if isinstance(handler, Handler):
+                handler.on_event(event)
+            else:
+                handler(event)
 
     def debug(self, event=None, **kwargs):
         self._log(level.Debug, event, **kwargs)
