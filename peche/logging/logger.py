@@ -18,6 +18,9 @@ class Logger(object):
                                                  level.Critical]
 
     def add_handler(self, handler, levels=None):
+        if inspect.isclass(handler):
+            handler = handler()
+
         if levels is None and isinstance(handler, Handler):
             levels = handler.levels
         elif levels is None:
