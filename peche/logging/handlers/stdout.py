@@ -25,37 +25,41 @@ class StdoutHandler(Handler):
         params = {
             'timestamp': '{timestamp}',
             'level': ' [{level}]',
-            'path': ' {name}.{path}:' if event.path is not None else ' {name}:',
+            'path': ' {{name}}.{path}:' if event.path is not None else ' {{name}}:',
             'message': ' {message}' if event.message is not None else '',
             'tags': ' [{tags}]' if len(event.tags) > 0 else ''
         }
+
+        if event.path is not None:
+            if event.function != '<module>':
+                params['path'] = params['path'].format(
+                    path='{path}:{function}({line_no})')
+            else:
+                params['path'] = params['path'].format(
+                    path='{path}({line_no})')
 
         template = template.format(**params)
 
         return template
 
-    def on_event(self, event):
-        template = self.template(event)
-
-        if event.function != '<module>':
-            path_template = '{path}:{function}({line_no})'
-        else:
-            path_template = '{path}({line_no})'
-
+    def format(self, template, event):
         params = {
             'timestamp': str(event.timestamp),
             'level': event.level.name.upper(),
             'message': event.message,
             'name': event.ctx.name,
-            'path': path_template.format(path=event.path,
-                                         function=event.function,
-                                         line_no=event.line_no),
+            'path': event.path,
+            'function': event.function,
+            'line_no': event.line_no,
             'tags': '\t'.join(['{k}={v}'.format(k=k, v=event.tags[k])
                                for k in list(event.tags)]).lstrip()
         }
 
+        return template.format(**params)
+
+    def on_event(self, event):
         file = stderr if event.level in self.stderr_levels else stdout
 
-        cprint(template.format(**params),
+        cprint(self.format(self.template(event), event),
                self.level_to_colour[event.level],
                file=file)
