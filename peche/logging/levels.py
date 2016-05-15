@@ -5,8 +5,8 @@ from enum import Enum
 
 
 class Level(Enum):
-    Debug = 1
-    Info = 2
-    Warn = 3
-    Error = 4
-    Critical = 5
+    Debug = 10
+    Info = 20
+    Warn = 30
+    Error = 40
+    Critical = 50
