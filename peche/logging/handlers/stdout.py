@@ -25,7 +25,7 @@ class StdoutHandler(Handler):
         params = {
             'timestamp': '{timestamp}',
             'level': ' [{level}]',
-            'path': ' {{name}}.{path}:' if event.path is not None else ' {{name}}:',
+            'path': ' {{name}}.{path}:' if event.path is not None else ' {name}:',
             'message': ' {message}' if event.message is not None else '',
             'tags': ' [{tags}]' if len(event.tags) > 0 else ''
         }
