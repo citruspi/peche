@@ -6,8 +6,8 @@ import inspect
 from peche.logging import Level
 from peche.logging import Event
 from peche.logging.handlers import Handler
-from pprint import pprint
 import sys
+
 
 class Logger(object):
 
