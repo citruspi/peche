@@ -6,16 +6,20 @@ import inspect
 from peche.logging import Level
 from peche.logging import Event
 from peche.logging.handlers import Handler
+from pprint import pprint
+import sys
 
 class Logger(object):
 
-    def __init__(self, ctx, level_=Level.Info, default_levels=None):
+    def __init__(self, ctx, level_=Level.Info, default_levels=None,
+                 inspection=False):
         self.ctx = ctx
         self._handlers = {}
         self.level = level_
         self.default_levels = default_levels or [Level.Debug, Level.Info,
                                                  Level.Warn, Level.Error,
                                                  Level.Critical]
+        self.inspection = inspection
 
     def add_handler(self, handler, levels=None):
         if inspect.isclass(handler):
@@ -50,13 +54,18 @@ class Logger(object):
         if level_.value < self.level.value:
             return
 
-        stack = inspect.stack()[2]
+        if self.inspection:
+            stack = inspect.getframeinfo(sys._getframe(2))
 
-        path = stack[1]
-        line_no = stack[2]
-        function = stack[3]
+            path = stack.filename
+            line_no = stack.lineno
+            function = stack.function
 
-        path = path[len(self.ctx.root)+1:-3].replace('/', '.')
+            path = path[len(self.ctx.root)+1:-3].replace('/', '.')
+        else:
+            path = None
+            line_no = None
+            function = None
 
         event = Event(
             timestamp=timestamp,
