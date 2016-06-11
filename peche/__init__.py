@@ -1,3 +1,3 @@
 from peche.manager import Manager
 
-manager = Manager()
+setup = Manager().setup
