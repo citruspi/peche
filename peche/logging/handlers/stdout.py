@@ -8,14 +8,6 @@ from sys import stdout, stderr
 
 class StdoutHandler(Handler):
 
-    level_to_colour = {
-        Level.Debug: 'blue',
-        Level.Info: 'green',
-        Level.Warn: 'yellow',
-        Level.Error: 'red',
-        Level.Critical: 'magenta'
-    }
-
     def __init__(self, stderr_levels=None):
         self.stderr_levels = stderr_levels or [Level.Error, Level.Critical]
 
@@ -60,6 +52,4 @@ class StdoutHandler(Handler):
     def on_event(self, event):
         file = stderr if event.level in self.stderr_levels else stdout
 
-        cprint(self.format(self.template(event), event),
-               self.level_to_colour[event.level],
-               file=file)
+        print(self.format(self.template(event), event), file=file)
