@@ -9,7 +9,7 @@ class Handler(object):
     levels = [Level.Debug, Level.Info, Level.Warn, Level.Error,
               Level.Critical]
 
-    def setup(self, event):
+    def setup(self):
         pass
 
     def on_event(self, event):
