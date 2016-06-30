@@ -64,7 +64,7 @@ class Logger(object):
             return
 
         if self.inspection:
-            stack = inspect.getframeinfo(sys._getframe(2))
+            stack = inspect.getframeinfo(sys._getframe(2), 0)
 
             path = stack.filename
             line_no = stack.lineno
