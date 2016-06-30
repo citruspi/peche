@@ -25,6 +25,9 @@ class Logger(object):
         if inspect.isclass(handler):
             handler = handler()
 
+        if isinstance(handler, Handler):
+            handler.setup()
+
         if levels is None and isinstance(handler, Handler):
             levels = handler.levels
         elif levels is None:
@@ -47,6 +50,9 @@ class Logger(object):
                 self._handlers[level_].remove(handler)
             except ValueError:
                 pass
+
+        if isinstance(handler, Handler):
+            handler.close()
 
     def _log(self, level_, event, **kwargs):
         timestamp = datetime.datetime.utcnow()
