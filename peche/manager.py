@@ -5,6 +5,8 @@ import inspect
 from peche.context import Context
 from peche.logging import Logger
 from peche.logging.handlers import Stdout
+import sys
+
 
 class Manager(object):
     __state = {}
@@ -15,7 +17,9 @@ class Manager(object):
 
     def setup(self, name=None, root=None, logger=None):
         if name is None or root is None:
-            path = inspect.stack()[1][1]
+            stack = inspect.getframeinfo(sys._getframe(1), 0)
+
+            path = stack.filename
 
             components = path.split('/')
 
