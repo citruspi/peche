@@ -54,6 +54,9 @@ class Logger(object):
         if isinstance(handler, Handler):
             handler.close()
 
+    def drop_handlers(self):
+        self._handlers = {}
+
     def _log(self, level_, event, **kwargs):
         timestamp = datetime.datetime.utcnow()
 
